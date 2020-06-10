@@ -1,5 +1,7 @@
 var PROPERTIES = require('./mock-properties').data,
     favorites = [];
+var testv1 = 9999;
+var testobj = {id:5,content:"asfasf"};
 
 function findAll(req, res, next) {
     return res.json(PROPERTIES);
@@ -8,7 +10,15 @@ function findAll(req, res, next) {
 
 function findById(req, res, next) {
     var id = req.params.id;
-    res.json(PROPERTIES[id - 1]);
+    testv1 = testv1 +3;
+    testobj.id = testobj.id +5;
+    var ip = 
+         req.connection.remoteAddress || 
+         req.socket.remoteAddress || 
+         req.connection.socket.remoteAddress;
+    console.log("GET type ", "client:", ip, "global v1", testv1, "global v2", testobj);
+    res.json(testv1+JSON.stringify(testobj));
+    //res.json(PROPERTIES[id - 1]);
 }
 
 function getFavorites(req, res, next) {
@@ -42,6 +52,14 @@ function unfavorite(req, res, next) {
 function like(req, res, next) {
     var property = req.body;
     PROPERTIES[property.id - 1].likes++;
+    testv1 = testv1 +4;
+    testobj.id = testobj.id +6;
+    var ip = 
+         req.connection.remoteAddress || 
+         req.socket.remoteAddress || 
+         req.connection.socket.remoteAddress;
+    console.log("POST type ", "client:", ip, "global v1", testv1, "global v2", testobj);
+    
     res.json(PROPERTIES[property.id - 1].likes);
 }
 
